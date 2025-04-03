@@ -5,84 +5,84 @@ from PIL import Image, ImageTk
 # Fil där böckerna sparas
 BOOKS_FILE = "books.txt"
 
-def load_books():
-    books = {}
+def ladda_bok():
+    böcker = {}
     try:
         with open(BOOKS_FILE, "r") as file:
             for line in file:
                 title, status = line.strip().split(" - ")
-                books[title] = status
+                böcker[title] = status
     except FileNotFoundError:
         pass  # Om filen inte finns så startar vi med en tom lista
-    return books
+    return böcker
 
-def save_books(books):
+def spara_bok(böcker):
     with open(BOOKS_FILE, "w") as file:
-        for title, status in books.items():
+        for title, status in böcker.items():
             file.write(f"{title} - {status}\n")
 
-def update_book_list():
-    books = load_books()
+def uppdatera_bok_lista():
+    books = ladda_bok()
     listbox_books.delete(0, tk.END)
     for title, status in books.items():
         listbox_books.insert(tk.END, f"{title} - {status}")
 
-def add_book():
+def lägg_till_bok():
     title = entry_title.get()
     if title:
-        books = load_books()
-        if title in books:
+        böcker = ladda_bok()
+        if title in böcker:
             messagebox.showerror("Fel", "Boken finns redan i biblioteket!")
         else:
-            books[title] = "Tillgänglig"
-            save_books(books)
-            update_book_list()
+            böcker[title] = "Tillgänglig"
+            spara_bok(böcker)
+            uppdatera_bok_lista()
             messagebox.showinfo("Success", f"Boken '{title}' har lagts till.")
             entry_title.delete(0, tk.END)
     else:
         messagebox.showerror("Fel", "Ange en boktitel!")
 
-def borrow_book():
+def låna_bok():
     title = entry_title.get()
-    books = load_books()
-    if title in books and books[title] == "Tillgänglig":
-        books[title] = "Utlånad"
-        save_books(books)
-        update_book_list()
+    böcker = ladda_bok()
+    if title in böcker and böcker[title] == "Tillgänglig":
+        böcker[title] = "Utlånad"
+        spara_bok(böcker)
+        uppdatera_bok_lista()
         messagebox.showinfo("Success", f"Du har lånat '{title}'.")
-    elif title in books:
+    elif title in böcker:
         messagebox.showerror("Fel", "Boken är redan utlånad!")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
-def return_book():
+def lämna_tillbaka_bok():
     title = entry_title.get()
-    books = load_books()
-    if title in books and books[title] == "Utlånad":
-        books[title] = "Tillgänglig"
-        save_books(books)
-        update_book_list()
+    böcker = ladda_bok()
+    if title in böcker and böcker[title] == "Utlånad":
+        böcker[title] = "Tillgänglig"
+        spara_bok(böcker)
+        uppdatera_bok_lista()
         messagebox.showinfo("Success", f"Du har lämnat tillbaka '{title}'.")
-    elif title in books:
+    elif title in böcker:
         messagebox.showerror("Fel", "Boken är redan tillgänglig!")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
-def search_book():
+def sök_bok():
     title = entry_title.get()
-    books = load_books()
-    if title in books:
-        messagebox.showinfo("Sökresultat", f"Boken '{title}' är {books[title]}.")
+    böcker = ladda_bok()
+    if title in böcker:
+        messagebox.showinfo("Sökresultat", f"Boken '{title}' är {böcker[title]}.")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
-def delete_book():
+def ta_bort_bok():
     title = entry_title.get()
-    books = load_books()
-    if title in books:
-        del books[title]
-        save_books(books)
-        update_book_list()
+    böcker = ladda_bok()
+    if title in böcker:
+        del böcker[title]
+        spara_bok(böcker)
+        uppdatera_bok_lista()
         messagebox.showinfo("Success", f"Boken '{title}' har tagits bort.")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
@@ -111,17 +111,17 @@ tk.Label(frame_left, text="Boktitel:").pack()
 entry_title = tk.Entry(frame_left)
 entry_title.pack()
 
-tk.Button(frame_left, text="Lägg till bok", command=add_book).pack()
-tk.Button(frame_left, text="Ta bort bok", command=delete_book).pack()
-tk.Button(frame_left, text="Låna bok", command=borrow_book).pack()
-tk.Button(frame_left, text="Lämna tillbaka bok", command=return_book).pack()
-tk.Button(frame_left, text="Sök bok", command=search_book).pack()
+tk.Button(frame_left, text="Lägg till bok", command=lägg_till_bok).pack()
+tk.Button(frame_left, text="Ta bort bok", command=ta_bort_bok).pack()
+tk.Button(frame_left, text="Låna bok", command=låna_bok).pack()
+tk.Button(frame_left, text="Lämna tillbaka bok", command=lämna_tillbaka_bok).pack()
+tk.Button(frame_left, text="Sök bok", command=sök_bok).pack()
 
 
 tk.Label(frame_right, text="Alla böcker:").pack()
 listbox_books = tk.Listbox(frame_right, width=50, height=10)
 listbox_books.pack()
 
-update_book_list()
+uppdatera_bok_lista()
 
 root.mainloop()
