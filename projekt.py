@@ -3,13 +3,13 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 
 # Fil där böckerna sparas
-BOOKS_FILE = "books.txt"
+BÖCKER_FIL = "books.txt"
 
 def ladda_bok():
     böcker = {}
     try:
-        with open(BOOKS_FILE, "r") as file:
-            for line in file:
+        with open(BÖCKER_FIL, "r") as fil:
+            for line in fil:
                 title, status = line.strip().split(" - ")
                 böcker[title] = status
     except FileNotFoundError:
@@ -17,73 +17,73 @@ def ladda_bok():
     return böcker
 
 def spara_bok(böcker):
-    with open(BOOKS_FILE, "w") as file:
-        for title, status in böcker.items():
-            file.write(f"{title} - {status}\n")
+    with open(BÖCKER_FIL, "w") as fil:
+        for titel, status in böcker.items():
+            fil.write(f"{titel} - {status}\n")
 
 def uppdatera_bok_lista():
     books = ladda_bok()
     listbox_books.delete(0, tk.END)
-    for title, status in books.items():
-        listbox_books.insert(tk.END, f"{title} - {status}")
+    for titel, status in books.items():
+        listbox_books.insert(tk.END, f"{titel} - {status}")
 
 def lägg_till_bok():
-    title = entry_title.get()
-    if title:
+    titel = entry_title.get()
+    if titel:
         böcker = ladda_bok()
-        if title in böcker:
+        if titel in böcker:
             messagebox.showerror("Fel", "Boken finns redan i biblioteket!")
         else:
-            böcker[title] = "Tillgänglig"
+            böcker[titel] = "Tillgänglig"
             spara_bok(böcker)
             uppdatera_bok_lista()
-            messagebox.showinfo("Success", f"Boken '{title}' har lagts till.")
+            messagebox.showinfo("Success", f"Boken '{titel}' har lagts till.")
             entry_title.delete(0, tk.END)
     else:
         messagebox.showerror("Fel", "Ange en boktitel!")
 
 def låna_bok():
-    title = entry_title.get()
+    titel = entry_title.get()
     böcker = ladda_bok()
-    if title in böcker and böcker[title] == "Tillgänglig":
-        böcker[title] = "Utlånad"
+    if titel in böcker and böcker[titel] == "Tillgänglig":
+        böcker[titel] = "Utlånad"
         spara_bok(böcker)
         uppdatera_bok_lista()
-        messagebox.showinfo("Success", f"Du har lånat '{title}'.")
-    elif title in böcker:
+        messagebox.showinfo("Success", f"Du har lånat '{titel}'.")
+    elif titel in böcker:
         messagebox.showerror("Fel", "Boken är redan utlånad!")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
 def lämna_tillbaka_bok():
-    title = entry_title.get()
+    titel = entry_title.get()
     böcker = ladda_bok()
-    if title in böcker and böcker[title] == "Utlånad":
-        böcker[title] = "Tillgänglig"
+    if titel in böcker and böcker[titel] == "Utlånad":
+        böcker[titel] = "Tillgänglig"
         spara_bok(böcker)
         uppdatera_bok_lista()
-        messagebox.showinfo("Success", f"Du har lämnat tillbaka '{title}'.")
-    elif title in böcker:
+        messagebox.showinfo("Success", f"Du har lämnat tillbaka '{titel}'.")
+    elif titel in böcker:
         messagebox.showerror("Fel", "Boken är redan tillgänglig!")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
 def sök_bok():
-    title = entry_title.get()
+    titel = entry_title.get()
     böcker = ladda_bok()
-    if title in böcker:
-        messagebox.showinfo("Sökresultat", f"Boken '{title}' är {böcker[title]}.")
+    if titel in böcker:
+        messagebox.showinfo("Sökresultat", f"Boken '{titel}' är {böcker[titel]}.")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
 def ta_bort_bok():
-    title = entry_title.get()
+    titel = entry_title.get()
     böcker = ladda_bok()
-    if title in böcker:
-        del böcker[title]
+    if titel in böcker:
+        del böcker[titel]
         spara_bok(böcker)
         uppdatera_bok_lista()
-        messagebox.showinfo("Success", f"Boken '{title}' har tagits bort.")
+        messagebox.showinfo("Success", f"Boken '{titel}' har tagits bort.")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
