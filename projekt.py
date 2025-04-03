@@ -90,7 +90,7 @@ def ta_bort_bok():
 # Skapa GUI
 root = tk.Tk()
 root.title("Bibliotekssystem")
-root.geometry("900x600")
+root.geometry("900x650")
 
 # Ladda bakgrundsbild
 bg_image = Image.open("böcker.jpg")  # Ange sökvägen till din bild här
