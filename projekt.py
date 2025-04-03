@@ -5,58 +5,58 @@ import json
 # Fil där böckerna sparas
 BOOKS_FILE = "books.json"
 
-def load_books():
+def ladda_böcker():
     try:
         with open(BOOKS_FILE, "r") as file:
             return json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
 
-def save_books(books):
+def spara_bok(books):
     with open(BOOKS_FILE, "w") as file:
         json.dump(books, file, indent=4)
 
-def add_book():
+def gör_bok():
     title = entry_title.get()
     if title:
-        books = load_books()
+        books = ladda_böcker()
         if title in books:
             messagebox.showerror("Fel", "Boken finns redan i biblioteket!")
         else:
             books[title] = "Tillgänglig"
-            save_books(books)
+            spara_bok(books)
             messagebox.showinfo("Success", f"Boken '{title}' har lagts till.")
             entry_title.delete(0, tk.END)
     else:
         messagebox.showerror("Fel", "Ange en boktitel!")
 
-def borrow_book():
+def låna_bok():
     title = entry_title.get()
-    books = load_books()
+    books = ladda_böcker()
     if title in books and books[title] == "Tillgänglig":
         books[title] = "Utlånad"
-        save_books(books)
+        spara_bok(books)
         messagebox.showinfo("Success", f"Du har lånat '{title}'.")
     elif title in books:
         messagebox.showerror("Fel", "Boken är redan utlånad!")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
-def return_book():
+def lämna_bok():
     title = entry_title.get()
-    books = load_books()
+    books = ladda_böcker()
     if title in books and books[title] == "Utlånad":
         books[title] = "Tillgänglig"
-        save_books(books)
+        spara_bok(books)
         messagebox.showinfo("Success", f"Du har lämnat tillbaka '{title}'.")
     elif title in books:
         messagebox.showerror("Fel", "Boken är redan tillgänglig!")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
-def search_book():
+def sök_bok():
     title = entry_title.get()
-    books = load_books()
+    books = ladda_böcker()
     if title in books:
         messagebox.showinfo("Sökresultat", f"Boken '{title}' är {books[title]}.")
     else:
@@ -71,9 +71,9 @@ tk.Label(root, text="Boktitel:").pack()
 entry_title = tk.Entry(root)
 entry_title.pack()
 
-tk.Button(root, text="Lägg till bok", command=add_book).pack()
-tk.Button(root, text="Låna bok", command=borrow_book).pack()
-tk.Button(root, text="Lämna tillbaka bok", command=return_book).pack()
-tk.Button(root, text="Sök bok", command=search_book).pack()
+tk.Button(root, text="Lägg till bok", command=gör_bok).pack()
+tk.Button(root, text="Låna bok", command=låna_bok).pack()
+tk.Button(root, text="Lämna tillbaka bok", command=lämna_bok).pack()
+tk.Button(root, text="Sök bok", command=sök_bok).pack()
 
 root.mainloop()
