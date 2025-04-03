@@ -71,6 +71,18 @@ def search_book():
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
+def tabort_bok():
+    title = entry_title.get()
+    books = load_books()
+    if title in books:
+        del books[title]
+        save_books(books)
+        update_book_list()
+        messagebox.showinfo("Success", f"Boken '{title}' har tagits bort.")
+    else:
+        messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
+
+
 # Skapa GUI
 root = tk.Tk()
 root.title("Bibliotekssystem")
@@ -90,6 +102,7 @@ tk.Button(frame_left, text="Lägg till bok", command=add_book).pack()
 tk.Button(frame_left, text="Låna bok", command=borrow_book).pack()
 tk.Button(frame_left, text="Lämna tillbaka bok", command=return_book).pack()
 tk.Button(frame_left, text="Sök bok", command=search_book).pack()
+tk.Button(frame_left, text="Ta bort bok", command=tabort_bok).pack()
 
 tk.Label(frame_right, text="Alla böcker:").pack()
 listbox_books = tk.Listbox(frame_right, width=50, height=10)
