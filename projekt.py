@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk
 import json
 
 # Fil där böckerna sparas
@@ -71,7 +72,7 @@ def search_book():
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
-def tabort_bok():
+def delete_book():
     title = entry_title.get()
     books = load_books()
     if title in books:
@@ -82,11 +83,19 @@ def tabort_bok():
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
-
 # Skapa GUI
 root = tk.Tk()
 root.title("Bibliotekssystem")
-root.geometry("500x300")
+root.geometry("900x600")
+
+# Ladda bakgrundsbild
+bg_image = Image.open("böcker.jpg")  # Ange sökvägen till din bild här
+
+bg_photo = ImageTk.PhotoImage(bg_image)
+
+# Skapa en label för att visa bakgrundsbilden
+background_label = tk.Label(root, image=bg_photo)
+background_label.place(relwidth=1, relheight=1)  # Placera bakgrunden över hela fönstret
 
 frame_left = tk.Frame(root)
 frame_left.pack(side=tk.LEFT, padx=10, pady=10)
@@ -102,7 +111,7 @@ tk.Button(frame_left, text="Lägg till bok", command=add_book).pack()
 tk.Button(frame_left, text="Låna bok", command=borrow_book).pack()
 tk.Button(frame_left, text="Lämna tillbaka bok", command=return_book).pack()
 tk.Button(frame_left, text="Sök bok", command=search_book).pack()
-tk.Button(frame_left, text="Ta bort bok", command=tabort_bok).pack()
+tk.Button(frame_left, text="Ta bort bok", command=delete_book).pack()
 
 tk.Label(frame_right, text="Alla böcker:").pack()
 listbox_books = tk.Listbox(frame_right, width=50, height=10)
