@@ -1,21 +1,25 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-import json
 
 # Fil där böckerna sparas
-BOOKS_FILE = "books.json"
+BOOKS_FILE = "books.txt"
 
 def load_books():
+    books = {}
     try:
         with open(BOOKS_FILE, "r") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
+            for line in file:
+                title, status = line.strip().split(" - ")
+                books[title] = status
+    except FileNotFoundError:
+        pass  # Om filen inte finns så startar vi med en tom lista
+    return books
 
 def save_books(books):
     with open(BOOKS_FILE, "w") as file:
-        json.dump(books, file, indent=4)
+        for title, status in books.items():
+            file.write(f"{title} - {status}\n")
 
 def update_book_list():
     books = load_books()
@@ -108,10 +112,11 @@ entry_title = tk.Entry(frame_left)
 entry_title.pack()
 
 tk.Button(frame_left, text="Lägg till bok", command=add_book).pack()
+tk.Button(frame_left, text="Ta bort bok", command=delete_book).pack()
 tk.Button(frame_left, text="Låna bok", command=borrow_book).pack()
 tk.Button(frame_left, text="Lämna tillbaka bok", command=return_book).pack()
 tk.Button(frame_left, text="Sök bok", command=search_book).pack()
-tk.Button(frame_left, text="Ta bort bok", command=delete_book).pack()
+
 
 tk.Label(frame_right, text="Alla böcker:").pack()
 listbox_books = tk.Listbox(frame_right, width=50, height=10)
