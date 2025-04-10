@@ -93,7 +93,7 @@ root.title("Bibliotekssystem")
 root.geometry("900x650")
 
 # Ladda bakgrundsbild
-bg_image = Image.open("böcker.jpg")
+bg_image = Image.open("bokfr.png")
 
 bg_photo = ImageTk.PhotoImage(bg_image)
 
