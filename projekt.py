@@ -93,13 +93,13 @@ root.title("Bibliotekssystem")
 root.geometry("900x650")
 
 # Ladda bakgrundsbild
-bg_image = Image.open("bokfr.png")
+#bg_image = Image.open("bokfr.png")
 
-bg_photo = ImageTk.PhotoImage(bg_image)
+#bg_photo = ImageTk.PhotoImage(bg_image)
 
 # Skapa en label för att visa bakgrundsbilden
-background_label = tk.Label(root, image=bg_photo)
-background_label.place(relwidth=1, relheight=1)  # Placera bakgrunden över hela fönstret
+#background_label = tk.Label(root, image=bg_photo)
+#background_label.place(relwidth=1, relheight=1)  # Placera bakgrunden över hela fönstret
 
 frame_left = tk.Frame(root)
 frame_left.pack(side=tk.LEFT, padx=10, pady=10)
