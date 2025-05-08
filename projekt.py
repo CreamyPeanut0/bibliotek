@@ -37,7 +37,7 @@ def lägg_till_bok():
             böcker[titel] = "Tillgänglig"
             spara_bok(böcker)
             uppdatera_bok_lista()
-            messagebox.showinfo("Success", f"Boken '{titel}' har lagts till.")
+            messagebox.showinfo("Klart", f"Boken '{titel}' har lagts till.")
             entry_title.delete(0, tk.END)
     else:
         messagebox.showerror("Fel", "Ange en boktitel!")
@@ -49,7 +49,7 @@ def låna_bok():
         böcker[titel] = "Utlånad"
         spara_bok(böcker)
         uppdatera_bok_lista()
-        messagebox.showinfo("Success", f"Du har lånat '{titel}'.")
+        messagebox.showinfo("Klart", f"Du har lånat '{titel}'.")
     elif titel in böcker:
         messagebox.showerror("Fel", "Boken är redan utlånad!")
     else:
@@ -62,7 +62,7 @@ def lämna_tillbaka_bok():
         böcker[titel] = "Tillgänglig"
         spara_bok(böcker)
         uppdatera_bok_lista()
-        messagebox.showinfo("Success", f"Du har lämnat tillbaka '{titel}'.")
+        messagebox.showinfo("Klart", f"Du har lämnat tillbaka '{titel}'.")
     elif titel in böcker:
         messagebox.showerror("Fel", "Boken är redan tillgänglig!")
     else:
@@ -83,7 +83,7 @@ def ta_bort_bok():
         del böcker[titel]
         spara_bok(böcker)
         uppdatera_bok_lista()
-        messagebox.showinfo("Success", f"Boken '{titel}' har tagits bort.")
+        messagebox.showinfo("Klart", f"Boken '{titel}' har tagits bort.")
     else:
         messagebox.showerror("Fel", "Boken finns inte i biblioteket!")
 
@@ -116,7 +116,6 @@ tk.Button(frame_left, text="Ta bort bok", command=ta_bort_bok).pack()
 tk.Button(frame_left, text="Låna bok", command=låna_bok).pack()
 tk.Button(frame_left, text="Lämna tillbaka bok", command=lämna_tillbaka_bok).pack()
 tk.Button(frame_left, text="Sök bok", command=sök_bok).pack()
-
 
 tk.Label(frame_right, text="Alla böcker:").pack()
 listbox_books = tk.Listbox(frame_right, width=50, height=10)
